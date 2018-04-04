@@ -4,7 +4,8 @@
   vars:
     test_image_repo: busybox
     test_image_tag: latest
-
+  roles:
+  - { role: kubespray-defaults}
   tasks:
 
   - name: Force binaries directory for Container Linux by CoreOS
