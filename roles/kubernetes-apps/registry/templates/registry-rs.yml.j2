@@ -44,7 +44,7 @@ spec:
               protocol: TCP
       volumes:
         - name: registry-pvc
-{% if registry_storage_class != "" %}
+{% if registry_storage_class != none %}
           persistentVolumeClaim:
             claimName: registry-pvc
 {% else %}

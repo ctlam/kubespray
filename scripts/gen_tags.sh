@@ -1,6 +1,4 @@
-#!/bin/sh
-set -eo pipefail
-
+#!/bin/sh -eo pipefail
 #Generate MD formatted tags from roles and cluster yaml files
 printf "|%25s |%9s\n" "Tag name" "Used for"
 echo "|--------------------------|---------"

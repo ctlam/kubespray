@@ -50,8 +50,6 @@
   when:
     - inventory_hostname == groups['kube-master'][0]
     - not item is skipped
-  loop_control:
-    label: "{{ item.item.file }}"
 
 - name: Kubernetes Apps | Add ClusterRoleBinding to admit nodes
   template:
@@ -181,7 +179,7 @@
   copy: src=k8s-cluster-critical-pc.yml dest={{ kube_config_dir }}/k8s-cluster-critical-pc.yml
   when:
     - kube_version is version('v1.11.1', '>=')
-    - inventory_hostname == groups['kube-master']|last
+    - inventory_hostname == groups['kube-master'][0]
 
 - name: PriorityClass | Create k8s-cluster-critical
   kube:
@@ -192,4 +190,4 @@
     state: latest
   when:
     - kube_version is version('v1.11.1', '>=')
-    - inventory_hostname == groups['kube-master']|last
+    - inventory_hostname == groups['kube-master'][0]

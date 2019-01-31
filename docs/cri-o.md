@@ -1,28 +1,31 @@
-CRI-O
+cri-o
 ===============
 
-[CRI-O] is a lightweight container runtime for Kubernetes.
-Kubespray supports basic functionality for using CRI-O as the default container runtime in a cluster.
+cri-o is container developed by kubernetes project.
+Currently, only basic function is supported for cri-o.
 
-* Kubernetes supports CRI-O on v1.11.1 or later.
-* Helm and other tools may not function as normal due to dependency on Docker.
-* `scale.yml` and `upgrade-cluster.yml` are not supported on clusters using CRI-O.
+* cri-o is supported kubernetes 1.11.1 or later.
+* helm and other feature may not be supported due to docker dependency.
+* scale.yml and upgrade-cluster.yml are not supported.
 
-_To use CRI-O instead of Docker, set the following variables:_
+helm and other feature may not be supported due to docker dependency.
+
+Use cri-o instead of docker, set following variable:
 
 #### all.yml
 
-```yaml
+```
+kubeadm_enabled: true
+...
 download_container: false
 skip_downloads: false
 ```
 
 #### k8s-cluster.yml
 
-```yaml
+```
 etcd_deployment_type: host
 kubelet_deployment_type: host
 container_manager: crio
 ```
 
-[CRI-O]: https://cri-o.io/

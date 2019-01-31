@@ -170,6 +170,7 @@
   set_fact:
     kube_proxy_mode: 'ipvs'
   when:
+    - kubeadm_enabled
     - kube_proxy_remove
   tags:
     - facts

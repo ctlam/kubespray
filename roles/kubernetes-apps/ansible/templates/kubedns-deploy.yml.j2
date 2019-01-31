@@ -25,11 +25,12 @@ spec:
       labels:
         k8s-app: kube-dns
       annotations:
-        seccomp.security.alpha.kubernetes.io/pod: 'docker/default'
+        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
 {% if kube_version is version('v1.11.1', '>=') %}
       priorityClassName: system-cluster-critical
 {% endif %}
+      # When having win nodes in cluster without this patch, this pod cloud try to be created in windows
       nodeSelector:
         beta.kubernetes.io/os: linux
       tolerations:
@@ -53,7 +54,7 @@ spec:
               - key: node-role.kubernetes.io/master
                 operator: In
                 values:
-                - ""
+                - "true"
       volumes:
       - name: kube-dns-config
         configMap:
@@ -135,7 +136,6 @@ spec:
         - --
         - -k
         - --cache-size=1000
-        - --no-negcache
         - --dns-loop-detect
         - --log-facility=-
         - --server=/{{ dns_domain }}/127.0.0.1#10053
@@ -170,8 +170,8 @@ spec:
         args:
         - --v={{ kube_log_level }}
         - --logtostderr
-        - --probe=kubedns,127.0.0.1:10053,kubernetes.default.svc.{{ dns_domain }},5,SRV
-        - --probe=dnsmasq,127.0.0.1:53,kubernetes.default.svc.{{ dns_domain }},5,SRV
+        - --probe=kubedns,127.0.0.1:10053,kubernetes.default.svc.{{ dns_domain }},5,A
+        - --probe=dnsmasq,127.0.0.1:53,kubernetes.default.svc.{{ dns_domain }},5,A
         ports:
         - containerPort: 10054
           name: metrics

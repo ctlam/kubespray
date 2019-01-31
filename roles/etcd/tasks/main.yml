@@ -1,27 +1,11 @@
 ---
-- set_fact:
-    architecture_groups:
-      x86_64: amd64
-      aarch64: arm64
-
-- name: ansible_architecture_rename
-  set_fact:
-    host_architecture: >-
-      {%- if ansible_architecture in architecture_groups -%}
-      {{architecture_groups[ansible_architecture]}}
-      {%- else -%}
-       {{ansible_architecture}}
-      {% endif %}
-
 - include_tasks: check_certs.yml
   when: cert_management == "script"
   tags:
     - etcd-secrets
     - facts
 
-- include_tasks: "gen_certs_script.yml"
-  when:
-    - cert_management |d('script') == "script"
+- include_tasks: "gen_certs_{{ cert_management }}.yml"
   tags:
     - etcd-secrets
 
@@ -75,6 +59,6 @@
 
 # After etcd cluster is assembled, make sure that
 # initial state of the cluster is in `existing`
-# state instead of `new`.
+# state insted of `new`.
 - include_tasks: refresh_config.yml
   when: is_etcd_master
